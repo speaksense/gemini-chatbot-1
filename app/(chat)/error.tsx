@@ -11,7 +11,7 @@ export default function Error({
         Oops, something went wrong!
       </h1>
       <p>
-        {error.message || 'The AI got rate limited, please try again later.'}
+        {error.message || 'The AI was rate limited, please try again later.'}
       </p>
       <p>Digest: {error.digest}</p>
     </div>

@@ -12,8 +12,8 @@ import { KasadaClient } from '@/lib/kasada/kasada-client'
 export const metadata = {
   metadataBase: new URL('https://gemini.vercel.ai'),
   title: {
-    default: 'Next.js Gemini Chatbot',
-    template: `%s - Next.js Gemini Chatbot`
+    default: 'Speaksense Chatbot',
+    template: `%s - Speaksense Chatbot`
   },
   description:
     'Build your own generative UI chatbot using the Vercel AI SDK and Google Gemini',

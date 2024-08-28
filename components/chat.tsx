@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 export interface ChatProps extends React.ComponentProps<'div'> {
-  initialMessages?: Message[]
+  initialMessages?: "Hi there Youtuber! I'm a chatbot created by Speaksense. I can help you with any of your YouTube creation needs. Just ask me anything!"
   id?: string
   session?: Session
   missingKeys: string[]

@@ -5,7 +5,7 @@ import { signIn } from 'next-auth/react'
 
 import { cn } from '@/lib/utils'
 import { Button, type ButtonProps } from '@/components/ui/button'
-import { IconGitHub, IconSpinner } from '@/components/ui/icons'
+import { IconSpeaksense, IconSpinner } from '@/components/ui/icons'
 
 interface LoginButtonProps extends ButtonProps {
   showGithubIcon?: boolean
@@ -34,7 +34,7 @@ export function LoginButton({
       {isLoading ? (
         <IconSpinner className="mr-2 animate-spin" />
       ) : showGithubIcon ? (
-        <IconGitHub className="mr-2" />
+        <IconSpeaksense className="mr-2" />
       ) : null}
       {text}
     </Button>

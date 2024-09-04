@@ -1,31 +1,40 @@
+import { ListVideos } from "@/components/flights/list-videos";
+
 export const responses = {
-  listFlights: {
-    arrival: 'SFO',
-    departure: 'JFK',
-    flights: [
+  ListVideos: {
+    videoPlatform: 'YouTube',
+    channelName: 'ClutchUpNext',
+    videos: [
       {
         id: 1,
-        airlines: 'Cathay Pacific',
-        departureTime: '11:00',
-        arrivalTime: '14:00',
-        price: 200
+        title: 'NBA 2K24 But I Can Only SPEND $1 on My BUILD After EACH WIN...',
+        publishDate: '2023-10-20',
+        viewCount: 1568695,
+        likeCount: 15000,
+        thumbnailUrl: 'https://i.ytimg.com/vi/YtmGciD0AIo/hqdefault.jpg',
+        videoUrl: 'https://www.youtube.com/watch?v=YtmGciD0AIo'
       },
       {
         id: 2,
-        airlines: 'Lufthansa',
-        departureTime: '15:00',
-        arrivalTime: '18:00',
-        price: 250
+        title: 'Anthony Davis plays as himself on 2K...',
+        publishDate: '2024-02-08',
+        viewCount: 1132882,
+        likeCount: 12568,
+        thumbnailUrl: 'https://i.ytimg.com/vi/xF-VkBMsYyY/hqdefault.jpg',
+        videoUrl: 'https://www.youtube.com/watch?v=xF-VkBMsYyY'
       },
       {
         id: 3,
-        airlines: 'Cathay Pacific',
-        departureTime: '19:00',
-        arrivalTime: '22:00',
-        price: 300
+        title: 'First to 99 Overall Evolution • Full 60-99 Overall Race In One Video!',
+        publishDate: '2023-03-29',
+        viewCount: 1033308,
+        likeCount: 9000,
+        thumbnailUrl: 'https://i.ytimg.com/vi/MP1Qrz16Kpk/hqdefault.jpg',
+        videoUrl: 'https://www.youtube.com/watch?v=MP1Qrz16Kpk'
       }
     ]
   },
+  
   showSeatPicker: {
     summary: {
       departingCity: 'San Francisco',

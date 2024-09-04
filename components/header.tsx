@@ -6,9 +6,9 @@ import { cn } from '@/lib/utils'
 import { auth } from '@/auth'
 import { Button, buttonVariants } from '@/components/ui/button'
 import {
-  IconGitHub,
   IconNextChat,
   IconSeparator,
+  IconSpeaksense,
   IconVercel
 } from '@/components/ui/icons'
 import { UserMenu } from '@/components/user-menu'
@@ -30,7 +30,7 @@ async function UserOrLogin() {
         </>
       ) : (
         <Link href="/new" rel="nofollow">
-          <img className="size-6" src="/images/gemini.png" alt="gemini logo" />
+          <img className="size-6" src="@/images/speaksense.png" alt="speaksense logo" />
         </Link>
       )}
       <div className="flex items-center">
@@ -59,21 +59,11 @@ export function Header() {
         <Button asChild size="sm" variant="ghost">
           <a
             target="_blank"
-            href="https://github.com/vercel-labs/gemini-chatbot"
+            href="https://speaksense.io"
             rel="noopener noreferrer"
           >
-            <IconGitHub />
-            <span className="hidden ml-2 md:flex">GitHub</span>
-          </a>
-        </Button>
-        <Button asChild size="sm" className="rounded-lg gap-1">
-          <a
-            href="https://vercel.com/templates/next.js/gemini-ai-chatbot"
-            target="_blank"
-          >
-            <IconVercel className="size-3" />
-            <span className="hidden sm:block">Deploy to Vercel</span>
-            <span className="sm:hidden">Deploy</span>
+            <IconSpeaksense />
+            <span className="hidden ml-2 md:flex">Speaksense</span>
           </a>
         </Button>
       </div>

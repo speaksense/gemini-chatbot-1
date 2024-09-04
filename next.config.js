@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
+  webpack: (config) => config,
   images: {
     remotePatterns: [
       {

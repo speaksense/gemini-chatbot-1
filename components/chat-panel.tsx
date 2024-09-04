@@ -38,14 +38,24 @@ export function ChatPanel({
 
   const exampleMessages = [
     {
-      heading: 'List flights flying from',
-      subheading: 'San Francisco to Rome today',
-      message: `List flights flying from San Francisco to Rome today`
+      heading: 'Show me my most popular',
+      subheading: 'YouTube videos',
+      message: `Show me my most popular YouTube videos`
     },
     {
-      heading: 'What is the status',
-      subheading: 'of flight BA142?',
-      message: 'What is the status of flight BA142?'
+      heading: 'What words should I use',
+      subheading: 'to help people find my videos?',
+      message: 'What words should I use to help people find my videos?'
+    },
+    {
+      heading: 'What topics should I focus on',
+      subheading: 'to increase my viewership?',
+      message: 'What topics should I focus on to increase my viewership?'
+    },
+    {
+      heading: 'What is the overall theme',
+      subheading: 'of my channel?',
+      message: 'What is the overall theme of my channel?'
     }
   ]
 

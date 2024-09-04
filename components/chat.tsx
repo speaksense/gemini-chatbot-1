@@ -3,8 +3,8 @@
 import { ChatList } from '@/components/chat-list'
 import { ChatPanel } from '@/components/chat-panel'
 import { EmptyScreen } from '@/components/empty-screen'
-import { ListFlights } from '@/components/flights/list-flights'
-import { ListHotels } from '@/components/hotels/list-hotels'
+import { ListVideos } from '@/components/flights/list-videos'
+// import { ListHotels } from '@/components/hotels/list-hotels'
 import { Message } from '@/lib/chat/actions'
 import { useLocalStorage } from '@/lib/hooks/use-local-storage'
 import { useScrollAnchor } from '@/lib/hooks/use-scroll-anchor'
@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 export interface ChatProps extends React.ComponentProps<'div'> {
-  initialMessages?: "Hi there Youtuber! I'm a chatbot created by Speaksense. I can help you with any of your YouTube creation needs. Just ask me anything!"
+  initialMessages?: Message[]
   id?: string
   session?: Session
   missingKeys: string[]

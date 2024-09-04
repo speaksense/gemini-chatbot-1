@@ -69,14 +69,13 @@ export function PromptForm({
         } catch {
           toast(
             <div className="text-red-600">
-              You have reached your message limit! Please try again later, or{' '}
+              You have reached your message limit! Please sign up for an account here
               <a
                 className="underline"
                 target="_blank"
                 rel="noopener noreferrer"
-                href="https://vercel.com/templates/next.js/gemini-ai-chatbot"
+                href="https://speaksense.io/pricing"
               >
-                deploy your own version
               </a>
               .
             </div>
@@ -139,7 +138,7 @@ export function PromptForm({
           ref={inputRef}
           tabIndex={0}
           onKeyDown={onKeyDown}
-          placeholder="Send a message."
+          placeholder="Message Speaksense"
           className="min-h-[60px] w-full bg-transparent placeholder:text-zinc-900 resize-none px-4 py-[1.3rem] focus-within:outline-none sm:text-sm"
           autoFocus
           spellCheck={false}

@@ -30,7 +30,7 @@ async function UserOrLogin() {
         </>
       ) : (
         <Link href="/new" rel="nofollow">
-          <img className="size-6" src="@/images/speaksense.png" alt="speaksense logo" />
+          <img className="size-6" src="/images/speaksense.png" alt="speaksense logo" />
         </Link>
       )}
       <div className="flex items-center">

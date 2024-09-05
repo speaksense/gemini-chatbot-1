@@ -19,19 +19,18 @@ import { saveChat } from '@/app/actions'
 import { SpinnerMessage, UserMessage } from '@/components/stocks/message'
 import { Chat } from '../types'
 import { auth } from '@/auth'
-import { FlightStatus } from '@/components/flights/flight-status'
-import { SelectSeats } from '@/components/flights/select-seats'
-import { ListVideos } from '@/components/flights/list-videos'
-import { BoardingPass } from '@/components/flights/boarding-pass'
-import { PurchaseTickets } from '@/components/flights/purchase-ticket'
+
+import { ListVideos } from '@/components/videos/ListVideos'
+import { TopicGenerator } from '@/components/videos/TopicGenerator'
+import { ThemeAnalyzer } from '@/components/videos/ThemeAnalyzer'
+import { SEOOptimizer } from '@/components/videos/SEOOptimizer'
+
 import { CheckIcon, SpinnerIcon } from '@/components/ui/icons'
 import { format } from 'date-fns'
 import { streamText } from 'ai'
 import { google } from '@ai-sdk/google'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { z } from 'zod'
-import { ListHotels } from '@/components/hotels/list-hotels'
-import { Destinations } from '@/components/flights/destinations'
 import { Video } from '@/components/media/video'
 import { rateLimit } from './ratelimit'
 
@@ -152,7 +151,6 @@ async function submitUserMessage(content: string) {
     role: message.role,
     content: message.content
   }))
-  // console.log(history)
 
   const textStream = createStreamableValue('')
   const spinnerStream = createStreamableUI(<SpinnerMessage />)
@@ -165,6 +163,7 @@ async function submitUserMessage(content: string) {
         model: google('models/gemini-1.5-flash'),
         temperature: 0,
         tools: {
+          // Tool to list YouTube videos
           showVideos: {
             description:
               "List the most popular YouTube videos in the UI, showing top 3 that match the user's query.",
@@ -177,87 +176,51 @@ async function submitUserMessage(content: string) {
               viewCount: z.number().describe('Number of views for the video'),
               likeCount: z.number().describe('Number of likes for the video')
             })
-          },          
-          listDestinations: {
-            description: 'List destinations to travel cities, max 5.',
+          },
+
+          // Tool for SEO keyword suggestions
+          seoOptimizer: {
+            description:
+              "Suggest SEO keywords to help increase video visibility and reach.",
             parameters: z.object({
-              destinations: z.array(
-                z
-                  .string()
-                  .describe(
-                    'List of destination cities. Include rome as one of the cities.'
-                  )
+              keywords: z.array(
+                z.string().describe('Suggested SEO keyword for better visibility')
               )
             })
           },
-          showSeatPicker: {
+
+          // Tool for topic generation suggestions
+          generateTopics: {
             description:
-              'Show the UI to choose or change seat for the selected flight.',
+              "Generate a list of potential topics to focus on to increase viewership and engagement.",
             parameters: z.object({
-              departingCity: z.string(),
-              arrivalCity: z.string(),
-              flightCode: z.string(),
-              date: z.string()
+              topics: z.array(
+                z.string().describe('Suggested topics to focus on for content creation')
+              )
             })
           },
-          showHotels: {
-            description: 'Show the UI to choose a hotel for the trip.',
-            parameters: z.object({ city: z.string() })
-          },
-          checkoutBooking: {
-            description:
-              'Show the UI to purchase/checkout a flight and hotel booking.',
-            parameters: z.object({ shouldConfirm: z.boolean() })
-          },
-          showBoardingPass: {
-            description: "Show user's imaginary boarding pass.",
+
+          // Tool for analyzing the overall theme of the channel
+          analyzeTheme: {
+            description: "Analyze the overall theme of the user's YouTube channel.",
             parameters: z.object({
-              airline: z.string(),
-              arrival: z.string(),
-              departure: z.string(),
-              departureTime: z.string(),
-              arrivalTime: z.string(),
-              price: z.number(),
-              seat: z.string(),
-              date: z
-                .string()
-                .describe('Date of the flight, example format: 6 April, 1998'),
-              gate: z.string()
-            })
-          },
-          showFlightStatus: {
-            description:
-              'Get the current status of imaginary flight by flight number and date.',
-            parameters: z.object({
-              flightCode: z.string(),
-              date: z.string(),
-              departingCity: z.string(),
-              departingAirport: z.string(),
-              departingAirportCode: z.string(),
-              departingTime: z.string(),
-              arrivalCity: z.string(),
-              arrivalAirport: z.string(),
-              arrivalAirportCode: z.string(),
-              arrivalTime: z.string()
+              themeSummary: z.string().describe('Summary of the channel theme based on analysis')
             })
           }
         },
         system: `
-      You are an AI assistant specialized in providing detailed insights and data about YouTube creators. You can answer questions regarding video performance, audience demographics, content trends, and channel growth strategies based on the extensive data available. Your responses help YouTube creators optimize their content and growth strategies.
+          You are an AI assistant that helps YouTube creators understand and optimize their channels. You provide insightful answers to any questions they have about their channel, including video performance, audience engagement, content strategies, SEO, and growth opportunities.
 
-      The date today is ${format(new Date(), 'd LLLL, yyyy')}.
-      The user is looking to analyze their YouTube channel's performance and compare it with competitors within the same niche. The user might also ask for video performance forecasts or suggestions for content that can potentially increase viewer engagement and subscriber growth.
+          Your main goal is to assist users by:
+          1. Answering their specific questions about their YouTube channel's data and performance.
+          2. Offering suggestions on how to improve video visibility, grow their audience, and increase engagement.
+          3. Guiding the user on how to interact with you, explaining what kind of information or insights you can provide.
+          4. Responding with clear, actionable steps when the user seeks advice on optimizing their content or strategies.
+          5. Adapting your answers to any question the user asks, without following a rigid flow, and being open to user-driven exploration.
 
-      Here's the flow:
-        1. Receive a query about a YouTube creator's data.
-        2. Analyze the data available and provide insights.
-        3. Offer detailed comparisons with competitors if asked.
-        4. Suggest content strategies based on trend analysis.
-        5. Answer specific questions about video performance metrics.
-        6. Provide forecasts on potential viewer engagement.
-        7. Give tips on improving channel visibility and subscriber count.
-      `,
-        messages: [...history]
+          Be conversational, helpful, and encouraging, while providing detailed insights to guide them in making informed decisions about their channel's growth.
+        `,
+        messages: [...history] // Use the user's chat history for context
       })
 
       let textContent = ''
@@ -286,34 +249,7 @@ async function submitUserMessage(content: string) {
         } else if (type === 'tool-call') {
           const { toolName, args } = delta
 
-          if (toolName === 'listDestinations') {
-            const { destinations } = args
-
-            uiStream.update(
-              <BotCard>
-                <Destinations destinations={destinations} />
-              </BotCard>
-            )
-
-            aiState.done({
-              ...aiState.get(),
-              interactions: [],
-              messages: [
-                ...aiState.get().messages,
-                {
-                  id: nanoid(),
-                  role: 'assistant',
-                  content: `Here's a list of holiday destinations based on the books you've read. Choose one to proceed to booking a flight. \n\n ${args.destinations.join(', ')}.`,
-                  display: {
-                    name: 'listDestinations',
-                    props: {
-                      destinations
-                    }
-                  }
-                }
-              ]
-            })
-          } else if (toolName === 'showVideos') {
+          if (toolName === 'showVideos') {
             aiState.done({
               ...aiState.get(),
               interactions: [],
@@ -323,7 +259,7 @@ async function submitUserMessage(content: string) {
                   id: nanoid(),
                   role: 'assistant',
                   content:
-                    "Here's a list of your most viewed videos. Choose one and we can breakdown its contents.",
+                    "Here's a list of your most viewed videos. Choose one and we can break down its contents.",
                   display: {
                     name: 'showVideos',
                     props: {
@@ -339,7 +275,7 @@ async function submitUserMessage(content: string) {
                 <ListVideos summary={args} />
               </BotCard>
             )
-          } else if (toolName === 'showSeatPicker') {
+          } else if (toolName === 'seoOptimizer') {
             aiState.done({
               ...aiState.get(),
               interactions: [],
@@ -349,11 +285,11 @@ async function submitUserMessage(content: string) {
                   id: nanoid(),
                   role: 'assistant',
                   content:
-                    "Here's a list of available seats for you to choose from. Select one to proceed to payment.",
+                    "Here are some SEO keywords that will help improve the visibility of your videos.",
                   display: {
-                    name: 'showSeatPicker',
+                    name: 'seoOptimizer',
                     props: {
-                      summary: args
+                      keywords: args.keywords
                     }
                   }
                 }
@@ -362,10 +298,10 @@ async function submitUserMessage(content: string) {
 
             uiStream.update(
               <BotCard>
-                <SelectSeats summary={args} />
+                <SEOOptimizer keywords={args.keywords} />
               </BotCard>
             )
-          } else if (toolName === 'showHotels') {
+          } else if (toolName === 'generateTopics') {
             aiState.done({
               ...aiState.get(),
               interactions: [],
@@ -375,46 +311,11 @@ async function submitUserMessage(content: string) {
                   id: nanoid(),
                   role: 'assistant',
                   content:
-                    "Here's a list of hotels for you to choose from. Select one to proceed to payment.",
+                    "Here are some trending topics that could help increase your viewership.",
                   display: {
-                    name: 'showHotels',
-                    props: {}
-                  }
-                }
-              ]
-            })
-
-            uiStream.update(
-              <BotCard>
-                <ListHotels />
-              </BotCard>
-            )
-          } else if (toolName === 'checkoutBooking') {
-            aiState.done({
-              ...aiState.get(),
-              interactions: []
-            })
-
-            uiStream.update(
-              <BotCard>
-                <PurchaseTickets />
-              </BotCard>
-            )
-          } else if (toolName === 'showBoardingPass') {
-            aiState.done({
-              ...aiState.get(),
-              interactions: [],
-              messages: [
-                ...aiState.get().messages,
-                {
-                  id: nanoid(),
-                  role: 'assistant',
-                  content:
-                    "Here's your boarding pass. Please have it ready for your flight.",
-                  display: {
-                    name: 'showBoardingPass',
+                    name: 'generateTopics',
                     props: {
-                      summary: args
+                      topics: args.topics
                     }
                   }
                 }
@@ -423,11 +324,11 @@ async function submitUserMessage(content: string) {
 
             uiStream.update(
               <BotCard>
-                <BoardingPass summary={args} />
+                <TopicGenerator topics={args.topics} />
               </BotCard>
             )
-          } else if (toolName === 'showFlightStatus') {
-            aiState.update({
+          } else if (toolName === 'analyzeTheme') {
+            aiState.done({
               ...aiState.get(),
               interactions: [],
               messages: [
@@ -435,22 +336,21 @@ async function submitUserMessage(content: string) {
                 {
                   id: nanoid(),
                   role: 'assistant',
-                  content: `The flight status of ${args.flightCode} is as follows:
-                Departing: ${args.departingCity} at ${args.departingTime} from ${args.departingAirport} (${args.departingAirportCode})
-                `
+                  content:
+                    "Here's the overall theme of your YouTube channel based on the analysis.",
+                  display: {
+                    name: 'analyzeTheme',
+                    props: {
+                      themeSummary: args.themeSummary
+                    }
+                  }
                 }
-              ],
-              display: {
-                name: 'showFlights',
-                props: {
-                  summary: args
-                }
-              }
+              ]
             })
 
             uiStream.update(
               <BotCard>
-                <FlightStatus summary={args} />
+                <ThemeAnalyzer themeSummary={args.themeSummary} />
               </BotCard>
             )
           }
@@ -463,9 +363,7 @@ async function submitUserMessage(content: string) {
     } catch (e) {
       console.error(e)
 
-      const error = new Error(
-        'The AI got rate limited, please try again later.'
-      )
+      const error = new Error('The AI got rate limited, please try again later.')
       uiStream.error(error)
       textStream.error(error)
       messageStream.error(error)
@@ -655,25 +553,17 @@ export const getUIStateFromAIState = (aiState: Chat) => {
             <BotCard>
               <ListVideos summary={message.display.props.summary} />
             </BotCard>
-          ) : message.display?.name === 'showSeatPicker' ? (
+          ) : message.display?.name === 'seoOptimizer' ? (
             <BotCard>
-              <SelectSeats summary={message.display.props.summary} />
+              <SEOOptimizer keywords={message.display.props.keywords} />
             </BotCard>
-          ) : message.display?.name === 'showHotels' ? (
+          ) : message.display?.name === 'generateTopics' ? (
             <BotCard>
-              <ListHotels />
+              <TopicGenerator topics={message.display.props.topics} />
             </BotCard>
-          ) : message.content === 'The purchase has completed successfully.' ? (
+          ) : message.display?.name === 'analyzeTheme' ? (
             <BotCard>
-              <PurchaseTickets status="expired" />
-            </BotCard>
-          ) : message.display?.name === 'showBoardingPass' ? (
-            <BotCard>
-              <BoardingPass summary={message.display.props.summary} />
-            </BotCard>
-          ) : message.display?.name === 'listDestinations' ? (
-            <BotCard>
-              <Destinations destinations={message.display.props.destinations} />
+              <ThemeAnalyzer themeSummary={message.display.props.themeSummary} />
             </BotCard>
           ) : (
             <BotMessage content={message.content} />
@@ -685,3 +575,4 @@ export const getUIStateFromAIState = (aiState: Chat) => {
         )
     }))
 }
+

@@ -35,43 +35,26 @@ export const responses = {
     ]
   },
   
-  showSeatPicker: {
-    summary: {
-      departingCity: 'San Francisco',
-      arrivalCity: 'New York City',
-      flightCode: 'BA123',
-      date: '23 March 2024'
-    }
+  VideoKeywords: {
+    suggestions: [
+      'NBA 2K24 tips',
+      'MyPlayer build strategy',
+      'Basketball game strategies',
+      'Gaming tutorials',
+      'Best NBA 2K plays'
+    ]
   },
-  showPurchaseFlight: {
-    status: 'requires_confirmation',
-    summary: {
-      airline: 'American Airlines',
-      departureTime: '10:00 AM',
-      arrivalTime: '12:00 PM',
-      price: 100,
-      seat: '1A'
-    }
+  
+  SuggestedTopics: {
+    topics: [
+      'How to create the best NBA 2K build',
+      'Top 10 underrated players in 2024',
+      'NBA game analysis and breakdowns',
+      'Pro player gameplay reactions'
+    ]
   },
-  showBoardingPass: {
-    airline: 'American Airlines',
-    arrival: 'SFO',
-    departure: 'NYC',
-    departureTime: '10:00 AM',
-    arrivalTime: '12:00 PM',
-    price: 100,
-    seat: '1A'
-  },
-  getFlightStatus: {
-    departingCity: 'Miami',
-    departingAirport: 'Miami Intl',
-    departingAirportCode: 'MIA',
-    departingTime: '11:45 PM',
-    arrivalCity: 'San Francisco',
-    arrivalAirport: 'San Francisco Intl',
-    arrivalAirportCode: 'SFO',
-    arrivalTime: '4:20 PM',
-    flightCode: 'XY 2421',
-    date: 'Mon, 16 Sep'
+  
+  ChannelTheme: {
+    themeSummary: 'Your channel focuses primarily on basketball gameplays, tips and tricks for NBA 2K, and player analysis, appealing to competitive and casual players alike.'
   }
-}
+};

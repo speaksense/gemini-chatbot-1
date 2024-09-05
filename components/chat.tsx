@@ -3,7 +3,7 @@
 import { ChatList } from '@/components/chat-list'
 import { ChatPanel } from '@/components/chat-panel'
 import { EmptyScreen } from '@/components/empty-screen'
-import { ListVideos } from '@/components/flights/list-videos'
+import { ListVideos } from '@/components/videos/ListVideos'
 // import { ListHotels } from '@/components/hotels/list-hotels'
 import { Message } from '@/lib/chat/actions'
 import { useLocalStorage } from '@/lib/hooks/use-local-storage'

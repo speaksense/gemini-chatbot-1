@@ -123,7 +123,7 @@ function IconVercel({ className, ...props }: React.ComponentProps<'svg'>) {
 
 function IconSpeaksense({ className, alt, style, ...props }: React.ComponentProps<'img'>) {
   // Ensure the path to your image is correct
-  const imagePath = '\\images\\gemini.png';
+  const imagePath = '\\images\\speaksense.png';
 
   const defaultStyle = {
     width: '20px',   // Set the width of the image

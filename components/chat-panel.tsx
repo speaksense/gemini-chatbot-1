@@ -40,24 +40,29 @@ export function ChatPanel({
     {
       heading: 'Show me my most popular',
       subheading: 'YouTube videos',
-      message: `Show me my most popular YouTube videos`
+      message: `Show me my most popular YouTube videos`,
+      responseType: 'ListVideos' // This links to your ListVideos response
     },
     {
       heading: 'What words should I use',
       subheading: 'to help people find my videos?',
-      message: 'What words should I use to help people find my videos?'
+      message: 'What words should I use to help people find my videos?',
+      responseType: 'VideoKeywords' // New response for analyzing keywords
     },
     {
       heading: 'What topics should I focus on',
       subheading: 'to increase my viewership?',
-      message: 'What topics should I focus on to increase my viewership?'
+      message: 'What topics should I focus on to increase my viewership?',
+      responseType: 'SuggestedTopics' // New response for suggested topics
     },
     {
       heading: 'What is the overall theme',
       subheading: 'of my channel?',
-      message: 'What is the overall theme of my channel?'
+      message: 'What is the overall theme of my channel?',
+      responseType: 'ChannelTheme' // New response for overall channel theme
     }
-  ]
+  ];
+  
 
   return (
     <div className="fixed inset-x-0 bg-white/90 bottom-0 w-full duration-300 ease-in-out peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px] dark:from-10%">

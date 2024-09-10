@@ -7,6 +7,11 @@ import { ChatList } from '@/components/chat-list'
 import { FooterText } from '@/components/footer'
 import { AI, UIState, getUIStateFromAIState } from '@/lib/chat/actions'
 
+// import { ListVideos } from '@/components/ListVideos';
+// import { SEOOptimizer } from '@/components/SEOOptimizer';
+// import { TopicGenerator } from '@/components/TopicGenerator';
+// import { ThemeAnalyzer } from '@/components/ThemeAnalyzer';
+
 export const runtime = 'edge'
 export const preferredRegion = 'home'
 

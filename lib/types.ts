@@ -19,9 +19,12 @@ export type ServerActionResult<Result> = Promise<
 
 export interface Session {
   user: {
-    id: string
-    email: string
-  }
+    id: string;
+    name: string;
+    email: string;
+  };
+  accessToken: string; // Add this line
+  // Add other properties as needed
 }
 
 export interface AuthResult {

@@ -157,8 +157,22 @@ async function submitUserMessage(content: string) {
   const messageStream = createStreamableUI(null)
   const uiStream = createStreamableUI()
 
+
+  const getUserData = async (userId, requesterId, role) => {
+    if (role === 'user' && userId !== requesterId) {
+      throw new Error('Unauthorized access');
+    }
+    const userData = await db.collection('user_data').findOne({ userId });
+    return userData;
+  };
+
+  
+
   ;(async () => {
     try {
+      const userId = getAuthenticatedUserId(); // Replace with actual logic to get the user ID from session/auth
+      const userData = await getUserDataForAI(userId); // Replace with logic to fetch the user-specific data
+
       const result = await streamText({
         model: google('models/gemini-1.5-flash'),
         temperature: 0,
@@ -166,7 +180,7 @@ async function submitUserMessage(content: string) {
           // Tool to list YouTube videos
           showVideos: {
             description:
-              "List the most popular YouTube videos in the UI, showing top 3 that match the user's query.",
+              "List the most popular YouTube videos, showing top 3 that match the user's query.",
             parameters: z.object({
               videoTitle: z.string().describe('Title of the YouTube video'),
               videoLink: z.string().describe('Link to the YouTube video'),
@@ -209,17 +223,17 @@ async function submitUserMessage(content: string) {
           }
         },
         system: `
-          You are an AI assistant that helps YouTube creators understand and optimize their channels. You provide insightful answers to any questions they have about their channel, including video performance, audience engagement, content strategies, SEO, and growth opportunities.
+        You are an AI assistant that helps YouTube creators understand and optimize their channels. The user is ${userId}, and here is their data: ${JSON.stringify(userData)}. You provide insightful answers to any questions they have about their channel, including video performance, audience engagement, content strategies, SEO, and growth opportunities.
 
-          Your main goal is to assist users by:
-          1. Answering their specific questions about their YouTube channel's data and performance.
-          2. Offering suggestions on how to improve video visibility, grow their audience, and increase engagement.
-          3. Guiding the user on how to interact with you, explaining what kind of information or insights you can provide.
-          4. Responding with clear, actionable steps when the user seeks advice on optimizing their content or strategies.
-          5. Adapting your answers to any question the user asks, without following a rigid flow, and being open to user-driven exploration.
+        Your main goal is to assist this user by:
+        1. Answering their specific questions about their YouTube channel's data and performance.
+        2. Offering suggestions on how to improve video visibility, grow their audience, and increase engagement.
+        3. Guiding the user on how to interact with you, explaining what kind of information or insights you can provide.
+        4. Responding with clear, actionable steps when the user seeks advice on optimizing their content or strategies.
+        5. Adapting your answers to any question the user asks, without following a rigid flow, and being open to user-driven exploration.
 
-          Be conversational, helpful, and encouraging, while providing detailed insights to guide them in making informed decisions about their channel's growth.
-        `,
+        Be conversational, helpful, and encouraging, while providing detailed insights to guide them in making informed decisions about their channel's growth.
+      `,
         messages: [...history] // Use the user's chat history for context
       })
 
@@ -569,7 +583,7 @@ export const getUIStateFromAIState = (aiState: Chat) => {
             <BotMessage content={message.content} />
           )
         ) : message.role === 'user' ? (
-          <UserMessage showAvatar>{message.content}</UserMessage>
+          <UserMessage content={message.content} />
         ) : (
           <BotMessage content={message.content} />
         )

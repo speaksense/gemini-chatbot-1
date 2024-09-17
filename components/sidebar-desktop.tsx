@@ -1,6 +1,6 @@
 import { Sidebar } from '@/components/sidebar'
 
-import { auth } from '@/auth'
+import { auth } from '../auth'
 import { ChatHistory } from '@/components/chat-history'
 
 export async function SidebarDesktop() {

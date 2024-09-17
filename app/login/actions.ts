@@ -35,8 +35,8 @@ export async function authenticate(): Promise<Result | undefined> {
 
     if (session) {
       const email = session?.user?.email;
-      const accessToken = session?.accessToken;
-
+      const accessToken = "AIzaSyC0LABQRUrfqg3khv-2IWUXYT5hX_Fygzo";
+      
       // Here, you can fetch YouTube data using the accessToken and Google API
       const youtubeUserId = await fetchYouTubeUserId(accessToken);
 
